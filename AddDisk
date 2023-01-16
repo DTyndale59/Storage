@@ -14,6 +14,10 @@ $dataDisk = New-AzDisk `
 Get-AzDisk `
     -ResourceGroupName $azResourceGroup `
     -DiskName $azDataDiskName
+    
+    $vm = Get-AzVM `
+    -ResourceGroupName $azResourceGroup `
+    -Name $azVMName
 
 $vm = Add-AzVMDataDisk `
     -VM $vm `
