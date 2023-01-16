@@ -1,0 +1,27 @@
+## Add a data disk
+
+$diskConfig = New-AzDiskConfig `
+    -Location $azRegion `
+    -CreateOption Empty `
+    -DiskSizeGB 128 `
+    -SkuName "Standard_LRS"
+
+$dataDisk = New-AzDisk `
+    -ResourceGroupName $azResourceGroup `
+    -DiskName $azDataDiskName `
+    -Disk $diskConfig
+
+Get-AzDisk `
+    -ResourceGroupName $azResourceGroup `
+    -DiskName $azDataDiskName
+
+$vm = Add-AzVMDataDisk `
+    -VM $vm `
+    -Name $azDataDiskName `
+    -CreateOption Attach `
+    -ManagedDiskId $dataDisk.Id `
+    -Lun 1
+
+Update-AzVM `
+    -ResourceGroupName $azResourceGroup `
+    -VM $vm
